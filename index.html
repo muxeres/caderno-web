@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Caderno de Atividades - Saúde e Bem-Estar no Trabalho</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f8fafc;
+      color: #0f172a;
+    }
+
+    @media print {
+      .no-print {
+        display: none !important;
+      }
+      body {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        font-size: 11pt;
+      }
+      .page-break {
+        page-break-after: always;
+        break-after: page;
+      }
+      .card-day {
+        border: 1px solid #cbd5e1 !important;
+        box-shadow: none !important;
+        margin-bottom: 1.5rem !important;
+        break-inside: avoid;
+      }
+      input[type="text"], textarea {
+        border-bottom: 1px solid #94a3b8 !important;
+        background: transparent !important;
+      }
+    }
+
+    .custom-checkbox {
+      width: 1.25rem;
+      height: 1.25rem;
+      accent-color: #0284c7;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body class="p-2 sm:p-6 md:p-8">
+
+  <!-- FORMULARIO PRINCIPAL CONECTADO A GOOGLE FORMS -->
+  <form id="googleForm" action="https://docs.google.com/forms/d/e/1FAIpQLScvjSRC6wobry95KSMZyBOnjI0z_pZl56kGU5OOPm5ehyaV0w/formResponse" method="POST" target="hidden_iframe" onsubmit="confirmarEnvio()">
+
+    <!-- Header Superior / Controles de Impressão e Envio -->
+    <div class="max-w-5xl mx-auto mb-6 no-print bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-slate-200">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <span class="inline-block px-3 py-1 bg-amber-100 text-amber-800 text-xs font-semibold rounded-full mb-2">
+            Programa de Saúde Ocupacional & Segurança (SESMT/CIPA)
+          </span>
+          <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+            Caderno de Atividades: Saúde e Bem-Estar no Trabalho
+          </h1>
+          <p class="text-slate-600 text-sm mt-1">
+            "Como nós nos cuidamos no trabalho? Realmente é com cuidado?"
+          </p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2">
+          <button type="submit" class="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-2.5 rounded-xl text-sm transition shadow-sm">
+            Enviar para Google Forms
+          </button>
+          <button type="button" onclick="window.print()" class="flex items-center gap-2 bg-sky-600 hover:bg-sky-700 text-white font-medium px-4 py-2.5 rounded-xl text-sm transition shadow-sm">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+            Imprimir Caderno
+          </button>
+          <button type="button" onclick="resetForm()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium px-3 py-2.5 rounded-xl text-sm transition">
+            Limpar Dados
+          </button>
+        </div>
+      </div>
+
+      <!-- Filtros de Semanas -->
+      <div class="mt-6 border-t border-slate-100 pt-4 flex flex-wrap gap-2 text-xs sm:text-sm">
+        <button type="button" onclick="filterWeek('all')" class="week-tab active bg-slate-900 text-white px-3 py-1.5 rounded-lg font-medium transition" id="tab-all">Todas as Semanas (25 Dias)</button>
+        <button type="button" onclick="filterWeek(1)" class="week-tab bg-slate-100 text-slate-700 hover:bg-slate-200 px-3 py-1.5 rounded-lg font-medium transition" id="tab-1">Semana 1: Conscientização</button>
+        <button type="button" onclick="filterWeek(2)" class="week-tab bg-slate-100 text-slate-700 hover:bg-slate-200 px-3 py-1.5 rounded-lg font-medium transition" id="tab-2">Semana 2: Alimentação/Hidratação</button>
+        <button type="button" onclick="filterWeek(3)" class="week-tab bg-slate-100 text-slate-700 hover:bg-slate-200 px-3 py-1.5 rounded-lg font-medium transition" id="tab-3">Semana 3: Exercícios & Ergonomia</button>
+        <button type="button" onclick="filterWeek(4)" class="week-tab bg-slate-100 text-slate-700 hover:bg-slate-200 px-3 py-1.5 rounded-lg font-medium transition" id="tab-4">Semana 4: Saúde Mental</button>
+        <button type="button" onclick="filterWeek(5)" class="week-tab bg-slate-100 text-slate-700 hover:bg-slate-200 px-3 py-1.5 rounded-lg font-medium transition" id="tab-5">Semana 5: Avaliação & Fechamento</button>
+      </div>
+    </div>
+
+    <!-- Cabeçalho de Identificação do Trabalhador -->
+    <div class="max-w-5xl mx-auto bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-8">
+      <div class="border-b border-slate-200 pb-4 mb-4 flex justify-between items-center">
+        <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
+          <svg class="w-5 h-5 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+          Ficha de Identificação do Trabalhador
+        </h2>
+        <span class="text-xs text-slate-500 font-medium">Ciclo de 25 Dias de Saúde Ocupacional</span>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-sm">
+        <div>
+          <label class="block text-xs font-semibold text-slate-500 mb-1">NOME COMPLETO:</label>
+          <input type="text" id="worker_name" name="entry.888544955" placeholder="Digite o nome completo" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 focus:ring-2 focus:ring-sky-500 focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-500 mb-1">FUNÇÃO / CARGO:</label>
+          <input type="text" id="worker_role" name="entry.1206129532" placeholder="Ex: Pedreiro, Armador, Eletricista" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 focus:ring-2 focus:ring-sky-500 focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-500 mb-1">SETOR / FRENTE DE OBRA:</label>
+          <input type="text" id="worker_sector" name="entry.1869811463" placeholder="Ex: Torre A - Pavimento 04" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 focus:ring-2 focus:ring-sky-500 focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-500 mb-1">TURNO DE TRABALHO:</label>
+          <input type="text" id="worker_shift" name="entry.1724392471" placeholder="Ex: Manhã / Tarde" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 focus:ring-2 focus:ring-sky-500 focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-500 mb-1">SUPERVISOR / TÉCNICO RESPONSÁVEL:</label>
+          <input type="text" id="worker_supervisor" name="entry.1693006454" placeholder="Nome do responsável" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 focus:ring-2 focus:ring-sky-500 focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-500 mb-1">DATA DE INÍCIO:</label>
+          <input type="date" id="worker_start_date" name="entry.1982705140" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 focus:ring-2 focus:ring-sky-500 focus:outline-none">
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTAINER DOS 25 DIAS -->
+    <div class="max-w-5xl mx-auto space-y-8" id="days-container">
+
+      <!-- SEMANA 1 -->
+      <div class="week-section" data-week="1">
+        <div class="bg-amber-600 text-white font-bold px-6 py-3 rounded-t-2xl flex justify-between items-center text-lg">
+          <span>SEMANA 1: Conscientização e Avaliação Inicial</span>
+          <span class="text-xs bg-amber-700 px-3 py-1 rounded-full font-normal">Dias 01 a 05</span>
+        </div>
+        <div class="bg-amber-50 p-4 border-x border-b border-amber-200 text-xs text-amber-900 mb-6 rounded-b-xl">
+          <strong>Objetivo Semanal:</strong> Mapear os hábitos atuais de saúde, compreender a importância dos cuidados preventivos e identificar os riscos diários na construção civil.
+        </div>
+
+        <!-- DIA 1 -->
+        <div class="card-day bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-6">
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-100 pb-4 mb-4 gap-2">
+            <div>
+              <span class="text-xs font-extrabold uppercase tracking-wider text-amber-600">Dia 01 • Conscientização</span>
+              <h3 class="text-xl font-bold text-slate-900">Apresentação e Alinhamento de Expectativas</h3>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="bg-amber-100 text-amber-800 text-xs px-2.5 py-1 rounded-md font-semibold">Prática: 15 min</span>
+              <span class="bg-sky-100 text-sky-800 text-xs px-2.5 py-1 rounded-md font-semibold">Teoria: 19 min</span>
+              <label class="flex items-center gap-2 cursor-pointer bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-200">
+                <input type="checkbox" id="check_day_1" class="custom-checkbox">
+                <span class="text-xs font-bold text-slate-700">Concluído</span>
+              </label>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="md:col-span-2 space-y-4 text-sm">
+              <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200">
+                <h4 class="font-bold text-slate-800 flex items-center gap-2 mb-1">Atividade Prática (15 min)</h4>
+                <p class="text-slate-600">Reunião rápida de equipe no canteiro de obras para introdução do projeto e alinhamento dos objetivos.</p>
+              </div>
+              <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200">
+                <h4 class="font-bold text-slate-800 flex items-center gap-2 mb-1">Exposição Dialogada (19 min)</h4>
+                <p class="text-slate-600">Apresentação sobre a importância da participação ativa: <em>"Como nós nos cuidamos no trabalho?"</em></p>
+              </div>
+            </div>
+            <div class="bg-amber-50 rounded-xl p-4 border border-amber-200 flex flex-col items-center justify-center text-center">
+              <span class="text-xs font-semibold text-amber-900">Ilustração 1: Reunião Matinal na Obra</span>
+            </div>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100">
+            <label class="block text-xs font-semibold text-slate-500 mb-1">MINHAS COMPREENSÕES & COMPROMISSO DO DIA 01:</label>
+            <textarea id="notes_day_1" name="entry.1845301885" rows="2" placeholder="O que eu espero deste mês de cuidados com a minha saúde no trabalho?" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none"></textarea>
+          </div>
+        </div>
+
+        <!-- DIA 2 -->
+        <div class="card-day bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-6">
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-100 pb-4 mb-4 gap-2">
+            <div>
+              <span class="text-xs font-extrabold uppercase tracking-wider text-amber-600">Dia 02 • Conscientização</span>
+              <h3 class="text-xl font-bold text-slate-900">Diagnóstico Inicial de Saúde Ocupacional</h3>
+            </div>
+            <div class="flex items-center gap-3">
+              <label class="flex items-center gap-2 cursor-pointer bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">
+                <input type="checkbox" id="check_day_2" class="custom-checkbox">
+                <span class="text-xs font-bold text-slate-700">Concluído</span>
+              </label>
+            </div>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100">
+            <label class="block text-xs font-semibold text-slate-500 mb-1">CHECKLIST PESSOAL DE SINTOMAS FREQUENTES:</label>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs text-slate-700 mt-2">
+              <label class="flex items-center gap-1.5"><input type="checkbox" id="sym_1"> Dores nas costas</label>
+              <label class="flex items-center gap-1.5"><input type="checkbox" id="sym_2"> Cansaço excessivo</label>
+              <label class="flex items-center gap-1.5"><input type="checkbox" id="sym_3"> Dores nos ombros/punhos</label>
+              <label class="flex items-center gap-1.5"><input type="checkbox" id="sym_4"> Dor de cabeça frequente</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- DIA 3 -->
+        <div class="card-day bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-6">
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-100 pb-4 mb-4 gap-2">
+            <div>
+              <span class="text-xs font-extrabold uppercase tracking-wider text-amber-600">Dia 03 • Conscientização</span>
+              <h3 class="text-xl font-bold text-slate-900">Riscos Físicos e Ergonômicos no Canteiro</h3>
+            </div>
+            <label class="flex items-center gap-2 cursor-pointer bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">
+              <input type="checkbox" id="check_day_3" class="custom-checkbox">
+              <span class="text-xs font-bold text-slate-700">Concluído</span>
+            </label>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100">
+            <label class="block text-xs font-semibold text-slate-500 mb-1">IDENTIFICAÇÃO DE RISCO NO MEU SETOR:</label>
+            <input type="text" id="notes_day_3" name="entry.1746885203" placeholder="Qual o maior risco físico ou postural que percebo na minha rotina hoje?" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
+          </div>
+        </div>
+
+        <!-- DIA 4 -->
+        <div class="card-day bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-6">
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-100 pb-4 mb-4 gap-2">
+            <div>
+              <span class="text-xs font-extrabold uppercase tracking-wider text-amber-600">Dia 04 • Ergonomia</span>
+              <h3 class="text-xl font-bold text-slate-900">Ergonomia e Postura Básica de Carga</h3>
+            </div>
+            <label class="flex items-center gap-2 cursor-pointer bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">
+              <input type="checkbox" id="check_day_4" class="custom-checkbox">
+              <span class="text-xs font-bold text-slate-700">Concluído</span>
+            </label>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100">
+            <label class="block text-xs font-semibold text-slate-500 mb-1">REGISTRO DE APRENDIZADO ERGONÔMICO:</label>
+            <input type="text" id="notes_day_4" name="entry.216194901" placeholder="Regra de ouro: Dobrar os joelhos e manter a carga próxima ao corpo!" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
+          </div>
+        </div>
+
+        <!-- DIA 5 -->
+        <div class="card-day bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-6">
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-100 pb-4 mb-4 gap-2">
+            <div>
+              <span class="text-xs font-extrabold uppercase tracking-wider text-amber-600">Dia 05 • Diálogo Aberto</span>
+              <h3 class="text-xl font-bold text-slate-900">Saúde Coletiva & Primeiros Resultados</h3>
+            </div>
+            <label class="flex items-center gap-2 cursor-pointer bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">
+              <input type="checkbox" id="check_day_5" class="custom-checkbox">
+              <span class="text-xs font-bold text-slate-700">Concluído</span>
+            </label>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100">
+            <label class="block text-xs font-semibold text-slate-500 mb-1">SUGESTÃO / QUEIXA PRINCIPAL COMPARTILHADA NA RODA:</label>
+            <input type="text" id="notes_day_5" name="entry.475343921" placeholder="O que podemos melhorar coletivamente no ambiente de trabalho?" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
+          </div>
+        </div>
+      </div>
+
+      <!-- SEMANA 2 -->
+      <div class="week-section" data-week="2">
+        <div class="bg-emerald-600 text-white font-bold px-6 py-3 rounded-t-2xl flex justify-between items-center text-lg">
+          <span>SEMANA 2: Hábitos Alimentares Saudáveis e Hidratação</span>
+          <span class="text-xs bg-emerald-700 px-3 py-1 rounded-full font-normal">Dias 06 a 10</span>
+        </div>
+
+        <!-- DIA 6 -->
+        <div class="card-day bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-6">
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-100 pb-4 mb-4 gap-2">
+            <div>
+              <span class="text-xs font-extrabold uppercase tracking-wider text-emerald-600">Dia 06 • Nutrição</span>
+              <h3 class="text-xl font-bold text-slate-900">A Importância do Café da Manhã Energético</h3>
+            </div>
+            <label class="flex items-center gap-2 cursor-pointer bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">
+              <input type="checkbox" id="check_day_6" class="custom-checkbox">
+              <span class="text-xs font-bold text-slate-700">Concluído</span>
+            </label>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100">
+            <label class="block text-xs font-semibold text-slate-500 mb-1">O QUE ME COMPROMETO A INCLUIR NO MEU CAFÉ DA MANHÃ:</label>
+            <input type="text" id="notes_day_6" name="entry.630963671" placeholder="Ex: Adicionar 1 fruta ou trocar o pão doce por ovos/queijo" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
+          </div>
+        </div>
+
+        <!-- DIA 7 -->
+        <div class="card-day bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-6">
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-100 pb-4 mb-4 gap-2">
+            <div>
+              <span class="text-xs font-extrabold uppercase tracking-wider text-emerald-600">Dia 07 • Hidratação</span>
+              <h3 class="text-xl font-bold text-slate-900">Hidratação Constante no Canteiro</h3>
+            </div>
+            <label class="flex items-center gap-2 cursor-pointer bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">
+              <input type="checkbox" id="check_day_7" class="custom-checkbox">
+              <span class="text-xs font-bold text-slate-700">Concluído</span>
+            </label>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100">
+            <label class="block text-xs font-semibold text-slate-500 mb-2">MARQUE CADA COPO DE ÁGUA CONSUMIDO HOJE (Meta: 2 a 3 Litros):</label>
+            <div class="flex flex-wrap gap-3">
+              <label class="flex items-center gap-1 text-xs text-slate-700 bg-slate-50 px-2.5 py-1 rounded border border-slate-200"><input type="checkbox"> 500ml (Início)</label>
+              <label class="flex items-center gap-1 text-xs text-slate-700 bg-slate-50 px-2.5 py-1 rounded border border-slate-200"><input type="checkbox"> 500ml (Meio da Manhã)</label>
+              <label class="flex items-center gap-1 text-xs text-slate-700 bg-slate-50 px-2.5 py-1 rounded border border-slate-200"><input type="checkbox"> 500ml (Almoço)</label>
+              <label class="flex items-center gap-1 text-xs text-slate-700 bg-slate-50 px-2.5 py-1 rounded border border-slate-200"><input type="checkbox"> 500ml (Tarde)</label>
+              <label class="flex items-center gap-1 text-xs text-slate-700 bg-slate-50 px-2.5 py-1 rounded border border-slate-200"><input type="checkbox"> 500ml (Final de Turno)</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- DIA 8 -->
+        <div class="card-day bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-6">
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-100 pb-4 mb-4 gap-2">
+            <div>
+              <span class="text-xs font-extrabold uppercase tracking-wider text-emerald-600">Dia 08 • Marmita Saudável</span>
+              <h3 class="text-xl font-bold text-slate-900">Escolhas Inteligentes de Marmitas</h3>
+            </div>
+            <label class="flex items-center gap-2 cursor-pointer bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">
+              <input type="checkbox" id="check_day_8" class="custom-checkbox">
+              <span class="text-xs font-bold text-slate-700">Concluído</span>
+            </label>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100">
+            <label class="block text-xs font-semibold text-slate-500 mb-1">COMO POSSO MELHORAR MINHA MARMITA AMANHÃ?</label>
+            <input type="text" id="notes_day_8" name="entry.1611532200" placeholder="Ex: Adicionar cenoura ralada ou diminuir a porção de fritura" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
+          </div>
+        </div>
+
+        <!-- DIA 9 -->
+        <div class="card-day bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-6">
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-100 pb-4 mb-4 gap-2">
+            <div>
+              <span class="text-xs font-extrabold uppercase tracking-wider text-emerald-600">Dia 09 • Conscientização Alimentar</span>
+              <h3 class="text-xl font-bold text-slate-900">O Impacto do Açúcar e Ultraprocessados</h3>
+            </div>
+            <label class="flex items-center gap-2 cursor-pointer bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">
+              <input type="checkbox" id="check_day_9" class="custom-checkbox">
+              <span class="text-xs font-bold text-slate-700">Concluído</span>
+            </label>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100">
+            <label class="block text-xs font-semibold text-slate-500 mb-1">SUBSTITUIÇÃO SAUDÁVEL DA SEMANA:</label>
+            <input type="text" id="notes_day_9" name="entry.889847714" placeholder="Vou trocar o refrigerante do almoço por: (Ex: Água, suco natural, fruta)" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
+          </div>
+        </div>
+
+        <!-- DIA 10 -->
+        <div class="card-day bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-6">
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-100 pb-4 mb-4 gap-2">
+            <div>
+              <span class="text-xs font-extrabold uppercase tracking-wider text-emerald-600">Dia 10 • Guia de Bolso</span>
+              <h3 class="text-xl font-bold text-slate-900">Guia Prático de Nutrição para Levar para Casa</h3>
+            </div>
+            <label class="flex items-center gap-2 cursor-pointer bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">
+              <input type="checkbox" id="check_day_10" class="custom-checkbox">
+              <span class="text-xs font-bold text-slate-700">Concluído</span>
+            </label>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100">
+            <label class="block text-xs font-semibold text-slate-500 mb-1">AVALIAÇÃO DOS HÁBITOS DA SEMANA:</label>
+            <input type="text" id="notes_day_10" name="entry.536474097" placeholder="Como me senti adotando novos hábitos de alimentação e água nesta semana?" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
+          </div>
+        </div>
+      </div>
+
+      <!-- SEMANA 3 -->
+      <div class="week-section" data-week="3">
+        <div class="bg-sky-600 text-white font-bold px-6 py-3 rounded-t-2xl flex justify-between items-center text-lg">
+          <span>SEMANA 3: Exercício Físico, Alongamento e Movimento</span>
+          <span class="text-xs bg-sky-700 px-3 py-1 rounded-full font-normal">Dias 11 a 15</span>
+        </div>
+
+        <!-- DIA 11 -->
+        <div class="card-day bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-6">
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-100 pb-4 mb-4 gap-2">
+            <div>
+              <span class="text-xs font-extrabold uppercase tracking-wider text-sky-600">Dia 11 • Laboral</span>
+              <h3 class="text-xl font-bold text-slate-900">Introdução à Ginástica Laboral (Membros Superiores)</h3>
+            </div>
+            <label class="flex items-center gap-2 cursor-pointer bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">
+              <input type="checkbox" id="check_day_11" class="custom-checkbox">
+              <span class="text-xs font-bold text-slate-700">Concluído</span>
+            </label>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100">
+            <label class="block text-xs font-semibold text-slate-500 mb-1">COMO ME SENTI APÓS O ALONGAMENTO INICIAL:</label>
+            <input type="text" id="notes_day_11" name="entry.1402164140" placeholder="Sensação de alívio, relaxamento ou maior flexibilidade?" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
+          </div>
+        </div>
+
+        <!-- DIA 12 -->
+        <div class="card-day bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-6">
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-100 pb-4 mb-4 gap-2">
+            <div>
+              <span class="text-xs font-extrabold uppercase tracking-wider text-sky-600">Dia 12 • Coluna Saudável</span>
+              <h3 class="text-xl font-bold text-slate-900">Prevenção de Dores Lombares</h3>
+            </div>
+            <label class="flex items-center gap-2 cursor-pointer bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">
+              <input type="checkbox" id="check_day_12" class="custom-checkbox">
+              <span class="text-xs font-bold text-slate-700">Concluído</span>
+            </label>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100">
+            <label class="block text-xs font-semibold text-slate-500 mb-1">MEU EXERCÍCIO LOMBAR FAVORITO DE HOJE:</label>
+            <input type="text" id="notes_day_12" name="entry.65097129" placeholder="Descreva o movimento que mais aliviou sua coluna" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
+          </div>
+        </div>
+
+        <!-- DIA 13 -->
+        <div class="card-day bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-6">
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-100 pb-4 mb-4 gap-2">
+            <div>
+              <span class="text-xs font-extrabold uppercase tracking-wider text-sky-600">Dia 13 • Prevenção LER/DORT</span>
+              <h3 class="text-xl font-bold text-slate-900">Gestão de Tarefas Repetitivas (Punhos e Mãos)</h3>
+            </div>
+            <label class="flex items-center gap-2 cursor-pointer bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">
+              <input type="checkbox" id="check_day_13" class="custom-checkbox">
+              <span class="text-xs font-bold text-slate-700">Concluído</span>
+            </label>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100">
+            <label class="block text-xs font-semibold text-slate-500 mb-1">REGISTRO DE PAUSAS ATIVAS NO SEU DIA:</label>
+            <input type="text" id="notes_day_13" name="entry.1547157325" placeholder="Quantas micro-pausas de alongamento você conseguiu fazer hoje?" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
+          </div>
+        </div>
+
+        <!-- DIA 14 -->
+        <div class="card-day bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-6">
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-100 pb-4 mb-4 gap-2">
+            <div>
+              <span class="text-xs font-extrabold uppercase tracking-wider text-sky-600">Dia 14 • Flexibilidade Geral</span>
+              <h3 class="text-xl font-bold text-slate-900">Mobilidade Integrada e Relaxamento Geral</h3>
+            </div>
+            <label class="flex items-center gap-2 cursor-pointer bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">
+              <input type="checkbox" id="check_day_14" class="custom-checkbox">
+              <span class="text-xs font-bold text-slate-700">Concluído</span>
+            </label>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100">
+            <label class="block text-xs font-semibold text-slate-500 mb-1">REGISTRO PESSOAL DE FLEXIBILIDADE:</label>
+            <input type="text" id="notes_day_14" name="entry.1548623885" placeholder="Percebi alguma rigidez muscular específica durante o treino?" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
+          </div>
+        </div>
+
+        <!-- DIA 15 -->
+        <div class="card-day bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-6">
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-100 pb-4 mb-4 gap-2">
+            <div>
+              <span class="text-xs font-extrabold uppercase tracking-wider text-sky-600">Dia 15 • Cartão de Bolso</span>
+              <h3 class="text-xl font-bold text-slate-900">Guia Prático de Alongamentos Diários</h3>
+            </div>
+            <label class="flex items-center gap-2 cursor-pointer bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">
+              <input type="checkbox" id="check_day_15" class="custom-checkbox">
+              <span class="text-xs font-bold text-slate-700">Concluído</span>
+            </label>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100">
+            <label class="block text-xs font-semibold text-slate-500 mb-1">LOCAL ONDE VOU GUARDAR/FIXAR MEU CARTÃO DE ALONGAMENTOS:</label>
+            <input type="text" id="notes_day_15" name="entry.1328044826" placeholder="Ex: No bolso do uniforme / No armário do vestiário" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
+          </div>
+        </div>
+      </div>
+
+      <!-- SEMANA 4 -->
+      <div class="week-section" data-week="4">
+        <div class="bg-purple-600 text-white font-bold px-6 py-3 rounded-t-2xl flex justify-between items-center text-lg">
+          <span>SEMANA 4: Gerenciamento do Estresse e Saúde Mental</span>
+          <span class="text-xs bg-purple-700 px-3 py-1 rounded-full font-normal">Dias 16 a 20</span>
+        </div>
+
+        <!-- DIA 16 -->
+        <div class="card-day bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-6">
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-100 pb-4 mb-4 gap-2">
+            <div>
+              <span class="text-xs font-extrabold uppercase tracking-wider text-purple-600">Dia 16 • Saúde Mental</span>
+              <h3 class="text-xl font-bold text-slate-900">Reconhecendo os Sinais do Estresse</h3>
+            </div>
+            <label class="flex items-center gap-2 cursor-pointer bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">
+              <input type="checkbox" id="check_day_16" class="custom-checkbox">
+              <span class="text-xs font-bold text-slate-700">Concluído</span>
+            </label>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100">
+            <label class="block text-xs font-semibold text-slate-500 mb-1">SINAL DE ESTRESSE QUE MAIS PERCEBO EM MIM QUANDO ESTOU CANSADO:</label>
+            <input type="text" id="notes_day_16" name="entry.1891160868" placeholder="Ex: Impaciência, dores nos ombros, dificuldade para concentrar" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
+          </div>
+        </div>
+
+        <!-- DIA 17 -->
+        <div class="card-day bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-6">
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-100 pb-4 mb-4 gap-2">
+            <div>
+              <span class="text-xs font-extrabold uppercase tracking-wider text-purple-600">Dia 17 • Controle da Ansiedade</span>
+              <h3 class="text-xl font-bold text-slate-900">Técnicas de Respiração Guiada</h3>
+            </div>
+            <label class="flex items-center gap-2 cursor-pointer bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">
+              <input type="checkbox" id="check_day_17" class="custom-checkbox">
+              <span class="text-xs font-bold text-slate-700">Concluído</span>
+            </label>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100">
+            <label class="block text-xs font-semibold text-slate-500 mb-1">MOMENTO DO DIA EM QUE POSSO APLICAR A RESPIRAÇÃO:</label>
+            <input type="text" id="notes_day_17" name="entry.617842127" placeholder="Ex: Antes do início do turno / Durante momentos de cobrança ou ansiedade" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
+          </div>
+        </div>
+
+        <!-- DIA 18 -->
+        <div class="card-day bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-6">
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-100 pb-4 mb-4 gap-2">
+            <div>
+              <span class="text-xs font-extrabold uppercase tracking-wider text-purple-600">Dia 18 • Sono & Descanso</span>
+              <h3 class="text-xl font-bold text-slate-900">A Importância do Sono Reparador</h3>
+            </div>
+            <label class="flex items-center gap-2 cursor-pointer bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">
+              <input type="checkbox" id="check_day_18" class="custom-checkbox">
+              <span class="text-xs font-bold text-slate-700">Concluído</span>
+            </label>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100">
+            <label class="block text-xs font-semibold text-slate-500 mb-1">MINHA META DE HORAS DE SONO POR NOITE:</label>
+            <input type="text" id="notes_day_18" name="entry.1892997443" placeholder="Ex: Dormir às 22h para garantir 7 a 8 horas de sono" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
+          </div>
+        </div>
+
+        <!-- DIA 19 -->
+        <div class="card-day bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-6">
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-100 pb-4 mb-4 gap-2">
+            <div>
+              <span class="text-xs font-extrabold uppercase tracking-wider text-purple-600">Dia 19 • Convivência e Respeito</span>
+              <h3 class="text-xl font-bold text-slate-900">Comunicação Assertiva no Trabalho</h3>
+            </div>
+            <label class="flex items-center gap-2 cursor-pointer bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">
+              <input type="checkbox" id="check_day_19" class="custom-checkbox">
+              <span class="text-xs font-bold text-slate-700">Concluído</span>
+            </label>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100">
+            <label class="block text-xs font-semibold text-slate-500 mb-1">COMO POSSO CONTRIBUIR PARA UM CLIMA MELHOR NA MINHA EQUIPE:</label>
+            <input type="text" id="notes_day_19" name="entry.1514069344" placeholder="Ex: Ouvir mais meus colegas, evitar gritos e pedir ajuda quando necessário" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
+          </div>
+        </div>
+
+        <!-- DIA 20 -->
+        <div class="card-day bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-6">
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-100 pb-4 mb-4 gap-2">
+            <div>
+              <span class="text-xs font-extrabold uppercase tracking-wider text-purple-600">Dia 20 • Redes de Apoio</span>
+              <h3 class="text-xl font-bold text-slate-900">Canais de Apoio e Recursos Psicológicos</h3>
+            </div>
+            <label class="flex items-center gap-2 cursor-pointer bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">
+              <input type="checkbox" id="check_day_20" class="custom-checkbox">
+              <span class="text-xs font-bold text-slate-700">Concluído</span>
+            </label>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100">
+            <label class="block text-xs font-semibold text-slate-500 mb-1">TELEFONE DE APOIO ANOTADO / GUARDADO:</label>
+            <input type="text" id="notes_day_20" name="entry.813896286" placeholder="Ex: CVV 188 / RH da Obra / SESMT Local" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
+          </div>
+        </div>
+      </div>
+
+      <!-- SEMANA 5 -->
+      <div class="week-section" data-week="5">
+        <div class="bg-indigo-600 text-white font-bold px-6 py-3 rounded-t-2xl flex justify-between items-center text-lg">
+          <span>SEMANA 5: Monitoramento, Feedback e Sustentabilidade</span>
+          <span class="text-xs bg-indigo-700 px-3 py-1 rounded-full font-normal">Dias 21 a 25</span>
+        </div>
+
+        <!-- DIA 21 -->
+        <div class="card-day bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-6">
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-100 pb-4 mb-4 gap-2">
+            <div>
+              <span class="text-xs font-extrabold uppercase tracking-wider text-indigo-600">Dia 21 • Progresso</span>
+              <h3 class="text-xl font-bold text-slate-900">Avaliação de Progresso por Equipe</h3>
+            </div>
+            <label class="flex items-center gap-2 cursor-pointer bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">
+              <input type="checkbox" id="check_day_21" class="custom-checkbox">
+              <span class="text-xs font-bold text-slate-700">Concluído</span>
+            </label>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100">
+            <label class="block text-xs font-semibold text-slate-500 mb-1">MUDANÇA MAIS VISÍVEL QUE NOTEI NA MINHA EQUIPE:</label>
+            <input type="text" id="notes_day_21" name="entry.492292643" placeholder="Ex: Colegas bebendo mais água / Fazendo alongamento juntos" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
+          </div>
+        </div>
+
+        <!-- DIA 22 -->
+        <div class="card-day bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-6">
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-100 pb-4 mb-4 gap-2">
+            <div>
+              <span class="text-xs font-extrabold uppercase tracking-wider text-indigo-600">Dia 22 • Feedback</span>
+              <h3 class="text-xl font-bold text-slate-900">Coleta de Feedback Qualitativo</h3>
+            </div>
+            <label class="flex items-center gap-2 cursor-pointer bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">
+              <input type="checkbox" id="check_day_22" class="custom-checkbox">
+              <span class="text-xs font-bold text-slate-700">Concluído</span>
+            </label>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100">
+            <label class="block text-xs font-semibold text-slate-500 mb-1">QUAL A SUA ATIVIDADE FAVORITA DO MÊS?</label>
+            <input type="text" id="notes_day_22" name="entry.562665664" placeholder="Ex: A aula de alongamento para coluna / A dinâmica da marmita" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
+          </div>
+        </div>
+
+        <!-- DIA 23 -->
+        <div class="card-day bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-6">
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-100 pb-4 mb-4 gap-2">
+            <div>
+              <span class="text-xs font-extrabold uppercase tracking-wider text-indigo-600">Dia 23 • Resultados</span>
+              <h3 class="text-xl font-bold text-slate-900">Apresentação dos Resultados Consolidados</h3>
+            </div>
+            <label class="flex items-center gap-2 cursor-pointer bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">
+              <input type="checkbox" id="check_day_23" class="custom-checkbox">
+              <span class="text-xs font-bold text-slate-700">Concluído</span>
+            </label>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100">
+            <label class="block text-xs font-semibold text-slate-500 mb-1">MENSAGEM DA EQUIPE SOBRE OS RESULTADOS:</label>
+            <input type="text" id="notes_day_23" name="entry.2018333689" placeholder="Insira seu comentário sobre os avanços alcançados" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
+          </div>
+        </div>
+
+        <!-- DIA 24 -->
+        <div class="card-day bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-6">
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-100 pb-4 mb-4 gap-2">
+            <div>
+              <span class="text-xs font-extrabold uppercase tracking-wider text-indigo-600">Dia 24 • Reconhecimento</span>
+              <h3 class="text-xl font-bold text-slate-900">Reconhecimento e Engajamento Coletivo</h3>
+            </div>
+            <label class="flex items-center gap-2 cursor-pointer bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">
+              <input type="checkbox" id="check_day_24" class="custom-checkbox">
+              <span class="text-xs font-bold text-slate-700">Concluído</span>
+            </label>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100">
+            <label class="block text-xs font-semibold text-slate-500 mb-1">ELOGIO OU DESTAQUE PARA UM COLEGA DE EQUIPE:</label>
+            <input type="text" id="notes_day_24" name="entry.1099618561" placeholder="Quem na sua equipe deu um bom exemplo de saúde e cuidado?" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
+          </div>
+        </div>
+
+        <!-- DIA 25 -->
+        <div class="card-day bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-6">
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-100 pb-4 mb-4 gap-2">
+            <div>
+              <span class="text-xs font-extrabold uppercase tracking-wider text-indigo-600">Dia 25 • Encerramento & Compromisso</span>
+              <h3 class="text-xl font-bold text-slate-900">Sustentabilidade das Boas Práticas</h3>
+            </div>
+            <label class="flex items-center gap-2 cursor-pointer bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">
+              <input type="checkbox" id="check_day_25" class="custom-checkbox">
+              <span class="text-xs font-bold text-slate-700">Concluído</span>
+            </label>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100">
+            <label class="block text-xs font-semibold text-slate-500 mb-1">RESPOSTA FINAL À PERGUNTA INICIAL: "Como nós nos cuidamos no trabalho? Realmente é com cuidado?"</label>
+            <textarea id="notes_day_25" name="entry.1023690186" rows="2" placeholder="Escreva sua reflexão final sobre este programa de saúde..." class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none"></textarea>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- BOTÓN PRINCIPAL DE ENVÍO -->
+    <div class="max-w-5xl mx-auto my-8 text-center no-print">
+      <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-base px-10 py-4 rounded-xl shadow-lg transition transform hover:-translate-y-0.5">
+        Enviar Todas as Respostas para o Google Forms
+      </button>
+    </div>
+
+  </form>
+
+  <!-- TERMO DE COMPROMISSO E CERTIFICADO DE CONCLUSÃO -->
+  <div class="max-w-5xl mx-auto mt-12 bg-white p-8 rounded-2xl shadow-sm border-2 border-sky-600 text-center page-break">
+    <div class="border-b border-slate-200 pb-4 mb-6">
+      <span class="text-xs font-extrabold uppercase tracking-widest text-sky-600">Certificado de Participação & Compromisso</span>
+      <h2 class="text-2xl font-black text-slate-900 mt-1">Programa "Saúde e Bem-Estar no Trabalho"</h2>
+      <p class="text-sm text-slate-600">Conclusão do Ciclo de 25 Dias de Conscientização e Práticas Ocupacionais</p>
+    </div>
+
+    <p class="text-sm text-slate-700 max-w-2xl mx-auto leading-relaxed mb-8">
+      Declaramos que o(a) colaborador(a) participou ativamente das atividades do <strong>Dossiê de Saúde e Bem-Estar no Trabalho</strong>, cobrindo ergonomia, nutrição, ginástica laboral, prevenção de riscos e saúde mental no canteiro de obras.
+    </p>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-xl mx-auto pt-8 border-t border-slate-200 text-xs">
+      <div>
+        <div class="border-b border-slate-400 mb-2 h-8"></div>
+        <p class="font-bold text-slate-800">Assinatura do Trabalhador(a)</p>
+        <p class="text-slate-500">Compromisso com o autocuidado</p>
+      </div>
+      <div>
+        <div class="border-b border-slate-400 mb-2 h-8"></div>
+        <p class="font-bold text-slate-800">Técnico de Segurança / SESMT / CIPA</p>
+        <p class="text-slate-500">Validação do Treinamento</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- FRAME OCULTO PARA ENVÍO EN SEGUNDO PLANO -->
+  <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+
+  <script>
+    // Manejador del envío directo a Google Sheets
+    document.getElementById('googleForm').addEventListener('submit', function(e) {
+      e.preventDefault(); // Evita el envío tradicional por action/iframe
+      
+      const submitBtns = document.querySelectorAll('button[type="submit"]');
+      submitBtns.forEach(btn => {
+        btn.innerText = "Guardando no Google Sheets...";
+        btn.disabled = true;
+      });
+
+      // Recopila los datos de la ficha de identificación
+      const formData = {
+        worker_name: document.getElementById('worker_name')?.value || "",
+        worker_role: document.getElementById('worker_role')?.value || "",
+        worker_sector: document.getElementById('worker_sector')?.value || "",
+        worker_shift: document.getElementById('worker_shift')?.value || "",
+        worker_supervisor: document.getElementById('worker_supervisor')?.value || "",
+        worker_start_date: document.getElementById('worker_start_date')?.value || ""
+      };
+
+      // Recopila las notas de cada uno de los 25 días
+      for (let i = 1; i <= 25; i++) {
+        const noteEl = document.getElementById(`notes_day_${i}`);
+        if (noteEl) {
+          formData[`notes_day_${i}`] = noteEl.value || "";
+        }
+      }
+
+      // Llama a la función del backend en Código.gs
+      google.script.run
+        .withSuccessHandler(function(response) {
+          submitBtns.forEach(btn => {
+            btn.innerText = "Enviar para Google Forms";
+            btn.disabled = false;
+          });
+          if (response && response.status === "SUCCESS") {
+            alert("¡Respostas salvas com sucesso diretamente no Google Sheets!");
+          } else {
+            alert("Erro ao salvar: " + (response.message || "Erro desconhecido"));
+          }
+        })
+        .withFailureHandler(function(err) {
+          submitBtns.forEach(btn => {
+            btn.innerText = "Enviar para Google Forms";
+            btn.disabled = false;
+          });
+          alert("Erro de conexão com o servidor: " + err);
+        })
+        .guardarRespuesta(formData);
+    });
+
+    // Función de filtrado por semana
+    function filterWeek(weekNum) {
+      const sections = document.querySelectorAll('.week-section');
+      const tabs = document.querySelectorAll('.week-tab');
+
+      tabs.forEach(tab => {
+        tab.classList.remove('bg-slate-900', 'text-white');
+        tab.classList.add('bg-slate-100', 'text-slate-700');
+      });
+
+      if (weekNum === 'all') {
+        sections.forEach(sec => sec.style.display = 'block');
+        document.getElementById('tab-all').classList.add('bg-slate-900', 'text-white');
+      } else {
+        sections.forEach(sec => {
+          if (sec.getAttribute('data-week') == weekNum) {
+            sec.style.display = 'block';
+          } else {
+            sec.style.display = 'none';
+          }
+        });
+        document.getElementById(`tab-${weekNum}`).classList.add('bg-slate-900', 'text-white');
+      }
+    }
+
+    // Persistencia local en el navegador (localStorage)
+    const inputIds = ['worker_name', 'worker_role', 'worker_sector', 'worker_shift', 'worker_supervisor', 'worker_start_date'];
+    for(let i = 1; i <= 25; i++) {
+      inputIds.push(`check_day_${i}`);
+      inputIds.push(`notes_day_${i}`);
+    }
+
+    document.addEventListener('input', (e) => {
+      if (inputIds.includes(e.target.id) || e.target.type === 'checkbox') {
+        if (e.target.type === 'checkbox') {
+          localStorage.setItem(e.target.id, e.target.checked);
+        } else {
+          localStorage.setItem(e.target.id, e.target.value);
+        }
+      }
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      inputIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          const savedValue = localStorage.getItem(id);
+          if (savedValue !== null) {
+            if (el.type === 'checkbox') {
+              el.checked = (savedValue === 'true');
+            } else {
+              el.value = savedValue;
+            }
+          }
+        }
+      });
+    });
+
+    function resetForm() {
+      if (confirm("Tem certeza que deseja limpar todos os registros e anotações deste caderno?")) {
+        localStorage.clear();
+        location.reload();
+      }
+    }
+  </script>
+</body>
+</html>
