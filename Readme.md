@@ -48,7 +48,10 @@ Projetada para cobrir um ciclo contínuo de **25 dias úteis (5 semanas)**, a fe
 ## 🎯 Objetivo Extensionista & Impacto Social
 
 O projeto visa mitigar riscos ocupacionais, reduzir índices de absenteísmo por dores osteomusculares e fortalecer a cultura de segurança e autocuidado na construção civil, alinhando teoria acadêmica de Inteligência Artificial e Automação de Processos com o impacto social direto na comunidade de trabalhadores.
+<<<<<<< HEAD
 
 url demo: https://script.google.com/macros/s/AKfycbwo4ORfSIHx8UrdNjXEM-D4qU52OypSPXVSdUhtfnfCEX-R9D3gJzYz0z-ZqyLk-QGK_Q/exec
 
 url forms demo : https://docs.google.com/forms/d/1znnLv4GwKuMI-ecOKq_50Ft6z6leIqHvLWBb8KQyPpg/prefill
+=======
+>>>>>>> 1c1b108c5a134a78ee10589f8e59b4b176a6db8b
